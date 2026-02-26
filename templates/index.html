@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman - Data Engineering Edition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header with Theme Toggle -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🎯 HANGMAN</h1>
+                <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+                    <span class="theme-icon" id="theme-icon">🌙</span>
+                </button>
+            </div>
+            <p class="subtitle">Data Engineering Edition</p>
+        </header>
+
+        <!-- Score Board -->
+        <div class="scoreboard">
+            <div class="score-item">
+                <span class="score-label">Wins</span>
+                <span class="score-value" id="wins">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">Losses</span>
+                <span class="score-value" id="losses">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">Streak</span>
+                <span class="score-value" id="streak">0</span>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Hangman Drawing -->
+            <div class="hangman-section">
+                <svg id="hangman-svg" viewBox="0 0 250 280" class="hangman-svg">
+                    <!-- Gallows -->
+                    <line x1="20" y1="270" x2="230" y2="270" class="gallows"/>
+                    <line x1="60" y1="270" x2="60" y2="20" class="gallows"/>
+                    <line x1="60" y1="20" x2="160" y2="20" class="gallows"/>
+                    <line x1="160" y1="20" x2="160" y2="50" class="gallows"/>
+                    <line x1="60" y1="60" x2="100" y2="20" class="gallows"/>
+
+                    <!-- Body parts (hidden by default) -->
+                    <circle cx="160" cy="75" r="25" class="body-part" id="head"/>
+                    <line x1="160" y1="100" x2="160" y2="180" class="body-part" id="body"/>
+                    <line x1="160" y1="120" x2="120" y2="160" class="body-part" id="left-arm"/>
+                    <line x1="160" y1="120" x2="200" y2="160" class="body-part" id="right-arm"/>
+                    <line x1="160" y1="180" x2="120" y2="230" class="body-part" id="left-leg"/>
+                    <line x1="160" y1="180" x2="200" y2="230" class="body-part" id="right-leg"/>
+
+                    <!-- Dead face -->
+                    <line x1="148" y1="65" x2="156" y2="73" class="face-dead" id="left-eye-1"/>
+                    <line x1="156" y1="65" x2="148" y2="73" class="face-dead" id="left-eye-2"/>
+                    <line x1="164" y1="65" x2="172" y2="73" class="face-dead" id="right-eye-1"/>
+                    <line x1="172" y1="65" x2="164" y2="73" class="face-dead" id="right-eye-2"/>
+                    <path d="M 148 88 Q 160 80 172 88" class="face-dead" id="sad-mouth" fill="none"/>
+
+                    <!-- Happy face -->
+                    <circle cx="152" cy="70" r="3" class="face-happy" id="happy-left-eye"/>
+                    <circle cx="168" cy="70" r="3" class="face-happy" id="happy-right-eye"/>
+                    <path d="M 148 82 Q 160 95 172 82" class="face-happy" id="happy-mouth" fill="none"/>
+                </svg>
+                <div class="lives-display">
+                    <span id="lives-text">❤️ 6 lives remaining</span>
+                </div>
+            </div>
+
+            <!-- Word and Info -->
+            <div class="word-section">
+                <div class="category-badge" id="category-badge">
+                    <span id="category-text">Category</span>
+                </div>
+                <div class="word-display" id="word-display">
+                    <span class="placeholder-text">Press "New Game" to start!</span>
+                </div>
+                <div class="hint-box" id="hint-box">
+                    <button class="hint-toggle" id="hint-toggle" onclick="toggleHint()">
+                        💡 Show Hint
+                    </button>
+                    <p class="hint-text" id="hint-text"></p>
+                </div>
+                <div class="message-box" id="message-box"></div>
+            </div>
+        </div>
+
+        <!-- Keyboard -->
+        <div class="keyboard-section">
+            <div class="keyboard" id="keyboard"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn btn-primary" id="new-game-btn" onclick="startNewGame()">
+                🎮 New Game
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with ❤️ for Data Engineers | <span id="word-count">120+</span> words</p>
+        </footer>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
